@@ -87,17 +87,6 @@ function playRound(humanChoice, computerChoice) {
   return winner;
 }
 
-/*
- * set a variable called gamecount
- * run a while statment (while gamecount < 5)
- * afterwards return the winner
- */
-
-//  for (gameCount = 0; gameCount < 5; gameCount++) {
-//    let human = getHumanChoice();
-//    let computer = getComputerChoice();
-//    playRound(human, computer);
-//  }
 
 const buttons = document.querySelectorAll("#buttonsDiv button");
 function onButtonClick(e) {
