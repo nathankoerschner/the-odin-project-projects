@@ -1,3 +1,6 @@
+const dialogue = document.getElementById("dialogue");
+const humanScoreDisplay = document.getElementById("humanScore");
+const computerScoreDisplay = document.getElementById("computerScore");
 function getComputerChoice() {
   let computerChoice;
   let computerChoicePrecursor = Math.floor(Math.random() * 2) + 1;
@@ -20,74 +23,88 @@ function getHumanChoice() {
   choice = prompt("Enter rock, paper, or scissors");
   return choice;
 }
-function playGame() {
-  let humanScore = 0;
-  let computerScore = 0;
-  function playRound(humanChoice, computerChoice) {
-    /*
-     * if the two choices are the same, print (it's a tie)
-     * set a funtion called "winner"
-     * for each case, evaluate the winner
-     * use an if statement to output a print of the winner & incriment the score
-     *
-     */
-    if (humanChoice == computerChoice) {
-      console.log("It's a tie");
-      return;
-    }
+let humanScore = 0;
+let computerScore = 0;
 
-    let winner;
-
-    switch (humanChoice + computerChoice) {
-      case "rockpaper":
-        computerChoice;
-        winner = "computer";
-        break;
-      case "rockscissors":
-        winner = "human";
-        break;
-      case "paperscissors":
-        winner = "computer";
-        break;
-      case "paperrock":
-        winner = "human";
-        break;
-      case "scissorsrock":
-        winner = "computer";
-        break;
-      case "scissorspaper":
-        winner = "human";
-        break;
-    }
-
-    if (winner == "human") {
-      console.log(
-        `You win! ${humanChoice.slice(0, 1).toUpperCase() + humanChoice.slice(1, humanChoice.length)} beats ${computerChoice}.`,
-      );
-      humanScore += 1;
-    } else {
-      console.log(
-        `You loose. ${computerChoice.slice(0, 1).toUpperCase() + computerChoice.slice(1, computerChoice.length)} beats ${humanChoice}.`,
-      );
-      computerScore += 1;
-    }
-
-    return winner;
-  }
-
+function playRound(humanChoice, computerChoice) {
   /*
-   * set a variable called gamecount
-   * run a while statment (while gamecount < 5)
-   * afterwards return the winner
+   * if the two choices are the same, print (it's a tie)
+   * set a funtion called "winner"
+   * for each case, evaluate the winner
+   * use an if statement to output a print of the winner & incriment the score
+   *
    */
-
-  for (gameCount = 0; gameCount < 5; gameCount++) {
-    let human = getHumanChoice();
-    let computer = getComputerChoice();
-    playRound(human, computer);
+  if (humanChoice == computerChoice) {
+    dialogue.innerText = "It's a tie";
+    return;
   }
 
-  finalWinner = humanScore > computerScore ? "human" : "computer";
-  console.log(`The final winner is ${finalWinner}`);
-  return finalWinner;
+  let winner;
+
+  switch (humanChoice + computerChoice) {
+    case "rockpaper":
+      computerChoice;
+      winner = "computer";
+      break;
+    case "rockscissors":
+      winner = "human";
+      break;
+    case "paperscissors":
+      winner = "computer";
+      break;
+    case "paperrock":
+      winner = "human";
+      break;
+    case "scissorsrock":
+      winner = "computer";
+      break;
+    case "scissorspaper":
+      winner = "human";
+      break;
+  }
+
+  if (winner == "human") {
+    dialogue.innerText = `You win! ${humanChoice.slice(0, 1).toUpperCase() + humanChoice.slice(1, humanChoice.length)} beats ${computerChoice}.`;
+    humanScore += 1;
+  } else {
+    dialogue.innerText = `You loose. ${computerChoice.slice(0, 1).toUpperCase() + computerChoice.slice(1, computerChoice.length)} beats ${humanChoice}.`;
+    computerScore += 1;
+  }
+  humanScoreDisplay.innerText = humanScore;
+  computerScoreDisplay.innerText = computerScore;
+
+  // end the game when a player reaches 5
+  if (humanScore == 5 || computerScore == 5) {
+    requestAnimationFrame(() => {
+      alert(
+        `And we have a winner: ${humanScore == 5 ? "You!" : "The Computer 👹"}`,
+      );
+    });
+    humanScore = 0;
+    computerScore = 0;
+  }
+
+  return winner;
 }
+
+/*
+ * set a variable called gamecount
+ * run a while statment (while gamecount < 5)
+ * afterwards return the winner
+ */
+
+//  for (gameCount = 0; gameCount < 5; gameCount++) {
+//    let human = getHumanChoice();
+//    let computer = getComputerChoice();
+//    playRound(human, computer);
+//  }
+
+const buttons = document.querySelectorAll("#buttonsDiv button");
+function onButtonClick(e) {
+  let selectedOption = e.target.innerText.toLowerCase();
+  playRound(selectedOption, getComputerChoice());
+}
+console.log(buttons);
+buttons.forEach((button) => {
+  button.addEventListener("click", onButtonClick);
+});
